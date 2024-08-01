@@ -87,58 +87,11 @@ jobs:
         run: |
           ./gradlew zipAll
 
-      - name: Prepare artifact
-        if: success()
-        id: prepareArtifact
-        run: |
-          # Function to find and process files
-          process_files() {
-            local pattern=$1
-            local type=$2
-            local variant=$3
-            local files=($(find . -name "$pattern"))
-            if [ ${#files[@]} -gt 0 ]; then
-              local name=$(basename "${files[0]}" .zip)
-              echo "${type}${variant}Name=$name" >> $GITHUB_OUTPUT
-              unzip -q "${files[0]}" -d "LSPosed-$type-$variant"
-            else
-              echo "Warning: No $type $variant file found matching $pattern"
-            fi
-          }
-
-          # Process each variant
-          process_files "LSPosed-v*-riru-release.zip" "riru" "Release"
-          process_files "LSPosed-v*-riru-debug.zip" "riru" "Debug"
-          process_files "LSPosed-v*-zygisk-release.zip" "zygisk" "Release"
-          process_files "LSPosed-v*-zygisk-debug.zip" "zygisk" "Debug"
-
-      - name: Upload riru release
+      - name: Upload artifacts
         uses: actions/upload-artifact@v3
-        if: steps.prepareArtifact.outputs.riruReleaseName
         with:
-          name: ${{ steps.prepareArtifact.outputs.riruReleaseName }}
-          path: "./LSPosed-riru-Release/*"
-
-      - name: Upload riru debug
-        uses: actions/upload-artifact@v3
-        if: steps.prepareArtifact.outputs.riruDebugName
-        with:
-          name: ${{ steps.prepareArtifact.outputs.riruDebugName }}
-          path: "./LSPosed-riru-Debug/*"
-
-      - name: Upload zygisk release
-        uses: actions/upload-artifact@v3
-        if: steps.prepareArtifact.outputs.zygiskReleaseName
-        with:
-          name: ${{ steps.prepareArtifact.outputs.zygiskReleaseName }}
-          path: "./LSPosed-zygisk-Release/*"
-
-      - name: Upload zygisk debug
-        uses: actions/upload-artifact@v3
-        if: steps.prepareArtifact.outputs.zygiskDebugName
-        with:
-          name: ${{ steps.prepareArtifact.outputs.zygiskDebugName }}
-          path: "./LSPosed-zygisk-Debug/*"
+         name: magisk-loader-release
+         path: magisk-loader/release/*
 
       - name: Upload mappings
         uses: actions/upload-artifact@v3
