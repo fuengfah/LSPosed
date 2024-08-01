@@ -45,7 +45,7 @@ cmaker {
         )
         cFlags.addAll(flags)
         cppFlags.addAll(flags)
-        abiFilters("arm64-v8a", "armeabi-v7a", "riscv64")
+        abiFilters("arm64-v8a", "armeabi-v7a")
     }
     buildTypes {
         if (it.name == "release") {
@@ -69,9 +69,9 @@ val verCode by extra(commitCount)
 val verName by extra(latestTag)
 val androidTargetSdkVersion by extra(35)
 val androidMinSdkVersion by extra(24)
-val androidBuildToolsVersion by extra("35.0.0")
-val androidCompileSdkVersion by extra(35)
-val androidCompileNdkVersion by extra("27.0.12077973")
+val androidBuildToolsVersion by extra("34.0.0")
+val androidCompileSdkVersion by extra(34)
+val androidCompileNdkVersion by extra("26.1.10909125")
 val androidSourceCompatibility by extra(JavaVersion.VERSION_21)
 val androidTargetCompatibility by extra(JavaVersion.VERSION_21)
 
