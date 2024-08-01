@@ -43,13 +43,13 @@ jobs:
       - name: Checkout libxposed/api
         uses: actions/checkout@v3
         with:
-          repository: libxposed/api
+          repository: suisei-pettan/api
           path: libxposed/api
 
       - name: Checkout libxposed/service
         uses: actions/checkout@v3
         with:
-          repository: libxposed/service
+          repository: suisei-pettan/service
           path: libxposed/service
 
       - name: Setup Java
