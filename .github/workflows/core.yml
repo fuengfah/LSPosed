@@ -91,38 +91,54 @@ jobs:
         if: success()
         id: prepareArtifact
         run: |
-          riruReleaseName=`ls magisk-loader/release/LSPosed-v*-riru-release.zip | awk -F '(/|.zip)' '{print $3}'` && echo "riruReleaseName=$riruReleaseName" >> $GITHUB_OUTPUT
-          riruDebugName=`ls magisk-loader/release/LSPosed-v*-riru-debug.zip | awk -F '(/|.zip)' '{print $3}'` && echo "riruDebugName=$riruDebugName" >> $GITHUB_OUTPUT
-          zygiskReleaseName=`ls magisk-loader/release/LSPosed-v*-zygisk-release.zip | awk -F '(/|.zip)' '{print $3}'` && echo "zygiskReleaseName=$zygiskReleaseName" >> $GITHUB_OUTPUT
-          zygiskDebugName=`ls magisk-loader/release/LSPosed-v*-zygisk-debug.zip | awk -F '(/|.zip)' '{print $3}'` && echo "zygiskDebugName=$zygiskDebugName" >> $GITHUB_OUTPUT
-          unzip magisk-loader/release/LSPosed-v*-riru-release.zip -d LSPosed-riru-release
-          unzip magisk-loader/release/LSPosed-v*-riru-debug.zip -d LSPosed-riru-debug
-          unzip magisk-loader/release/LSPosed-v*-zygisk-release.zip -d LSPosed-zygisk-release
-          unzip magisk-loader/release/LSPosed-v*-zygisk-debug.zip -d LSPosed-zygisk-debug
+          # Function to find and process files
+          process_files() {
+            local pattern=$1
+            local type=$2
+            local variant=$3
+            local files=($(find . -name "$pattern"))
+            if [ ${#files[@]} -gt 0 ]; then
+              local name=$(basename "${files[0]}" .zip)
+              echo "${type}${variant}Name=$name" >> $GITHUB_OUTPUT
+              unzip -q "${files[0]}" -d "LSPosed-$type-$variant"
+            else
+              echo "Warning: No $type $variant file found matching $pattern"
+            fi
+          }
+
+          # Process each variant
+          process_files "LSPosed-v*-riru-release.zip" "riru" "Release"
+          process_files "LSPosed-v*-riru-debug.zip" "riru" "Debug"
+          process_files "LSPosed-v*-zygisk-release.zip" "zygisk" "Release"
+          process_files "LSPosed-v*-zygisk-debug.zip" "zygisk" "Debug"
 
       - name: Upload riru release
         uses: actions/upload-artifact@v3
+        if: steps.prepareArtifact.outputs.riruReleaseName
         with:
           name: ${{ steps.prepareArtifact.outputs.riruReleaseName }}
-          path: "./LSPosed-riru-release/*"
+          path: "./LSPosed-riru-Release/*"
 
       - name: Upload riru debug
         uses: actions/upload-artifact@v3
+        if: steps.prepareArtifact.outputs.riruDebugName
         with:
           name: ${{ steps.prepareArtifact.outputs.riruDebugName }}
-          path: "./LSPosed-riru-debug/*"
+          path: "./LSPosed-riru-Debug/*"
 
       - name: Upload zygisk release
         uses: actions/upload-artifact@v3
+        if: steps.prepareArtifact.outputs.zygiskReleaseName
         with:
           name: ${{ steps.prepareArtifact.outputs.zygiskReleaseName }}
-          path: "./LSPosed-zygisk-release/*"
+          path: "./LSPosed-zygisk-Release/*"
 
       - name: Upload zygisk debug
         uses: actions/upload-artifact@v3
+        if: steps.prepareArtifact.outputs.zygiskDebugName
         with:
           name: ${{ steps.prepareArtifact.outputs.zygiskDebugName }}
-          path: "./LSPosed-zygisk-debug/*"
+          path: "./LSPosed-zygisk-Debug/*"
 
       - name: Upload mappings
         uses: actions/upload-artifact@v3
