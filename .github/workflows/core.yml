@@ -38,13 +38,13 @@ jobs:
       - name: Checkout libxposed/api
         uses: actions/checkout@v4
         with:
-          repository: pumPCin/api
+          repository: Howard20181/api
           path: libxposed/api
 
       - name: Checkout libxposed/service
         uses: actions/checkout@v4
         with:
-          repository: pumPCin/service
+          repository: Howard20181/service
           path: libxposed/service
 
       - name: Setup Java
