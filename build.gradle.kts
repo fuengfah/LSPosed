@@ -67,11 +67,11 @@ val defaultManagerPackageName by extra("org.lsposed.manager")
 val apiCode by extra(93)
 val verCode by extra(commitCount)
 val verName by extra(latestTag)
-val androidTargetSdkVersion by extra(34)
-val androidMinSdkVersion by extra(27)
-val androidBuildToolsVersion by extra("34.0.0")
-val androidCompileSdkVersion by extra(34)
-val androidCompileNdkVersion by extra("26.2.11394342")
+val androidTargetSdkVersion by extra(35)
+val androidMinSdkVersion by extra(21)
+val androidBuildToolsVersion by extra("35.0.0")
+val androidCompileSdkVersion by extra(35)
+val androidNdkVersion by extra("27.0.12077973")
 val androidSourceCompatibility by extra(JavaVersion.VERSION_21)
 val androidTargetCompatibility by extra(JavaVersion.VERSION_21)
 
@@ -88,7 +88,7 @@ subprojects {
 
             externalNativeBuild {
                 cmake {
-                    version = "3.22.1+"
+                    version = "3.28.0+"
                 }
             }
 
