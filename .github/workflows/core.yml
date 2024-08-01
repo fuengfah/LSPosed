@@ -44,7 +44,7 @@ jobs:
       - name: Checkout libxposed/service
         uses: actions/checkout@v4
         with:
-          repository: Howard20181/service
+          repository: libxposed/service
           path: libxposed/service
 
       - name: Setup Java
